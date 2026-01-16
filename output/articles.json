@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Government announces new policy",
+    "content": "The government has announced a new policy that will affect millions of citizens. The policy focuses on economic growth and social welfare.",
+    "source": "csv",
+    "url": "https://example.com/news1",
+    "fetched_at": "2026-01-16T18:42:44Z"
+  },
+  {
+    "title": "Tech company launches new product",
+    "content": "Leading tech company has launched a revolutionary new product that promises to change the industry.",
+    "source": "csv",
+    "url": "https://example.com/news2",
+    "fetched_at": "2026-01-16T18:42:44Z"
+  },
+  {
+    "title": "Climate summit reaches agreement",
+    "content": "World leaders have reached a historic agreement on climate change at the international summit.",
+    "source": "csv",
+    "url": "nan",
+    "fetched_at": "2026-01-16T18:42:44Z"
+  }
+]
