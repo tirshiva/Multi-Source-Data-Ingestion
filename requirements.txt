@@ -1,0 +1,1 @@
+requests python-dotenv beautifulsoup4 pandas newsapi-python
