@@ -82,7 +82,9 @@ class TestMain:
     @patch.dict(os.environ, {}, clear=True)
     def test_main_no_env_variables(self, mock_fetch_newsapi, mock_read_csv, mock_scrape_website):
         """Test main function when no environment variables are set."""
-        main()
+        with patch('main.os.path.exists') as mock_exists:
+            mock_exists.return_value = False  # CSV file doesn't exist
+            main()
         
         # NewsAPI should not be called (no API key)
         mock_fetch_newsapi.assert_not_called()
@@ -112,7 +114,9 @@ class TestMain:
              "url": "https://example.com", "fetched_at": "2025-01-15T10:00:00Z"}
         ]
         
-        main()
+        with patch('main.os.path.exists') as mock_exists:
+            mock_exists.return_value = False  # CSV file doesn't exist
+            main()
         
         mock_fetch_newsapi.assert_called_once()
         mock_read_csv.assert_not_called()
@@ -155,7 +159,9 @@ class TestMain:
              "url": "https://example.com", "fetched_at": "2025-01-15T10:00:00Z"}
         ]
         
-        main()
+        with patch('main.os.path.exists') as mock_exists:
+            mock_exists.return_value = False  # CSV file doesn't exist
+            main()
         
         mock_fetch_newsapi.assert_not_called()
         mock_read_csv.assert_not_called()
@@ -182,7 +188,8 @@ class TestMain:
         ]
         
         with patch('main.os.path.exists') as mock_exists:
-            mock_exists.return_value = True
+            # First call: CSV file exists, Second call: output directory exists
+            mock_exists.side_effect = [True, True]
             main()
         
         # Other fetchers should still be called
@@ -190,6 +197,7 @@ class TestMain:
         mock_scrape_website.assert_called_once()
         
         # Output should contain articles from other sources
+        assert os.path.exists("output/articles.json")
         with open("output/articles.json", 'r', encoding='utf-8') as f:
             articles = json.load(f)
         
@@ -299,7 +307,8 @@ class TestMain:
         mock_scrape_website.return_value = []
         
         with patch('main.os.path.exists') as mock_exists:
-            mock_exists.return_value = True
+            # First call: CSV file exists, Second call: output directory exists
+            mock_exists.side_effect = [True, True]
             main()
         
         # Verify file exists and has correct content
@@ -342,10 +351,12 @@ class TestMain:
         ]
         
         with patch('main.os.path.exists') as mock_exists:
-            mock_exists.return_value = True
+            # First call: CSV file exists, Second call: output directory exists
+            mock_exists.side_effect = [True, True]
             main()
         
         # Verify all articles are saved
+        assert os.path.exists("output/articles.json")
         with open("output/articles.json", 'r', encoding='utf-8') as f:
             articles = json.load(f)
         
@@ -479,7 +490,8 @@ class TestMain:
         mock_scrape_website.return_value = []
         
         with patch('main.os.path.exists') as mock_exists:
-            mock_exists.return_value = True
+            # First call: CSV file exists, Second call: output directory exists
+            mock_exists.side_effect = [True, True]
             main()
         
         # All fetchers should be called
@@ -488,6 +500,7 @@ class TestMain:
         mock_scrape_website.assert_called_once()
         
         # Output should be empty list
+        assert os.path.exists("output/articles.json")
         with open("output/articles.json", 'r', encoding='utf-8') as f:
             articles = json.load(f)
         

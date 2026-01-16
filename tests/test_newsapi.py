@@ -41,14 +41,14 @@ class TestFetchNewsAPI:
         assert len(result) == 2
         assert result[0]["title"] == "Test Article 1"
         assert result[0]["content"] == "This is the content of article 1"
-        assert result[0]["source"] == "Test Source 1"
+        assert result[0]["source"] == "newsapi"  # Source is always "newsapi" now
         assert result[0]["url"] == "https://example.com/article1"
         assert "fetched_at" in result[0]
         
         # Second article should use description when content is None
         assert result[1]["title"] == "Test Article 2"
         assert result[1]["content"] == "Description of article 2"
-        assert result[1]["source"] == "Test Source 2"
+        assert result[1]["source"] == "newsapi"  # Source is always "newsapi" now
         
         # Verify output format
         required_keys = {"title", "content", "source", "url", "fetched_at"}
@@ -271,6 +271,6 @@ class TestFetchNewsAPI:
         assert len(result) == 1
         assert result[0]["title"] == "Article with missing fields"
         assert result[0]["content"] == ""
-        assert result[0]["source"] == ""
-        assert result[0]["url"] == ""
+        assert result[0]["source"] == "newsapi"  # Source is always "newsapi" now
+        assert result[0]["url"] == "N/A"  # Empty URL becomes "N/A"
         assert "fetched_at" in result[0]

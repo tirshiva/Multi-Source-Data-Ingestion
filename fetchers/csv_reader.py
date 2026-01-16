@@ -75,11 +75,18 @@ def read_csv(file_path: str) -> List[Dict[str, str]]:
     
     try:
         for _, row in df.iterrows():
+            # Handle NaN values from pandas (empty/None become NaN)
+            url_value = row.get("url", "")
+            if pd.isna(url_value) or not url_value or str(url_value).lower() == "nan":
+                url_value = "N/A"
+            else:
+                url_value = str(url_value)
+            
             formatted_article = {
                 "title": str(row.get("title", "")),
                 "content": str(row.get("content", "")),
                 "source": "csv",  # Fixed source value as per assignment
-                "url": str(row.get("url", "")) or "N/A",  # Use "N/A" if URL is missing
+                "url": url_value,
                 "fetched_at": fetched_at
             }
             formatted_articles.append(formatted_article)
